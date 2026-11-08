@@ -50,12 +50,15 @@
 #
 #
 #
-# ### Brute Force — O(m × n × (m + n))
+#
+#
+#
+#
+# ### 1. Brute Force Approach
 
 python
-```
-from typing import List
 
+```python
 class Solution:
     def countServers(self, grid: List[List[int]]) -> int:
         m, n = len(grid), len(grid[0])
@@ -64,25 +67,34 @@ class Solution:
         for i in range(m):
             for j in range(n):
                 if grid[i][j] == 1:
-                    for c in range(n):
-                        if c != j and grid[i][c] == 1:
-                            count += 1
+                    communicate = False
+
+                    for k in range(m):
+                        if k != i and grid[k][j] == 1:
+                            communicate = True
                             break
-                    else:
-                        for r in range(m):
-                            if r != i and grid[r][j] == 1:
-                                count += 1
+
+                    if not communicate:
+                        for k in range(n):
+                            if k != j and grid[i][k] == 1:
+                                communicate = True
                                 break
+
+                    if communicate:
+                        count += 1
 
         return count
 ```
 
-### Optimal — O(m × n)
+Time Complexity: O(m × n × (m + n))
+
+Space Complexity: O(1)
+
+### 2. Optimal Approach
 
 python
-```
-from typing import List
 
+```python
 class Solution:
     def countServers(self, grid: List[List[int]]) -> int:
         m, n = len(grid), len(grid[0])
@@ -100,8 +112,13 @@ class Solution:
 
         for i in range(m):
             for j in range(n):
-                if grid[i][j] == 1 and (rows[i] > 1 or cols[j] > 1):
-                    count += 1
+                if grid[i][j] == 1:
+                    if rows[i] > 1 or cols[j] > 1:
+                        count += 1
 
         return count
 ```
+
+Time Complexity: O(m × n)
+
+Space Complexity: O(m + n)

@@ -1,0 +1,104 @@
+# A sequence of numbers is called an arithmetic progression if the difference between any two consecutive elements is the same.
+
+# Given an array of numbers arr, return true if the array can be rearranged to form an arithmetic progression. Otherwise, return false.
+
+
+
+# Example 1:
+
+# Input: arr = [3,5,1]
+# Output: true
+# Explanation: We can reorder the elements as [1,3,5] or [5,3,1] with differences 2 and -2 respectively, between each consecutive elements.
+# Example 2:
+
+# Input: arr = [1,2,4]
+# Output: false
+# Explanation: There is no way to reorder the elements to obtain an arithmetic progression.
+
+
+# Constraints:
+
+# 2 <= arr.length <= 1000
+# -106 <= arr[i] <= 106
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# ### 1. Brute Force — O(n log n)
+
+python
+
+```python
+
+from typing import List
+
+class Solution:
+    def canMakeArithmeticProgression(self, arr: List[int]) -> bool:
+        arr.sort()
+
+        diff = arr[1] - arr[0]
+
+        for i in range(2, len(arr)):
+            if arr[i] - arr[i - 1] != diff:
+                return False
+
+        return True
+```
+
+### 2. Optimal — O(n) (Using Set)
+
+python
+
+```python
+
+from typing import List
+
+class Solution:
+    def canMakeArithmeticProgression(self, arr: List[int]) -> bool:
+        mn = min(arr)
+        mx = max(arr)
+        n = len(arr)
+
+        if (mx - mn) % (n - 1) != 0:
+            return False
+
+        diff = (mx - mn) // (n - 1)
+
+        if diff == 0:
+            return len(set(arr)) == 1
+
+        seen = set()
+
+        for num in arr:
+            if (num - mn) % diff != 0:
+                return False
+
+            idx = (num - mn) // diff
+
+            if idx in seen:
+                return False
+
+            seen.add(idx)
+
+        return True
+```
